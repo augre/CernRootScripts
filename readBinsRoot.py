@@ -67,6 +67,20 @@ def main(argv):
     maxy=hist3D.GetYaxis().GetXmax()
     maxz=hist3D.GetZaxis().GetXmax()
     
+
+    rootValXY=r.TH2D("xyPlane","xy plane",biny,miny,maxy,binz,minz,maxz)
+    for y in range(0,biny):
+        for x in range(0,binx):
+            #print "y:",y,"x:",x
+            binXY=hist3D.GetBinContent(hist3D.GetBin(x+1, y+1, binz/2))
+            rootValXY.SetBinContent(rootValXY.GetBin(x+1,y+1), binXY)
+            #print binXY
+    rootValXY.Draw()
+
+    c2=r.TCanvas("c2")
+    rootValXY.Draw()
+    c2.Print("test.png")
+
     c1=r.TCanvas("c1", "", 1000,1000)
     c1.Divide(1,3)
     c1.cd(1)
@@ -83,6 +97,7 @@ def main(argv):
     r.gStyle.SetErrorX(0.)
     rootValX.SetMarkerStyle(20)
     
+
     #fitFcn=r.TF1("fitFcn","[0]*TMath::Voigt(x, [1],[2], 4)",-80,80)
     #fitFcn.SetParameter(0, 1.0)
     #fitFcn.SetParameter(1, 1.0)
@@ -104,7 +119,7 @@ def main(argv):
 
     myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
 
-    rootValX.Fit("fitFunc")
+    #rootValX.Fit("fitFunc")
 
     rootValX.Draw("E1")
     
@@ -158,6 +173,7 @@ def main(argv):
     rootValZ.Draw("E1")
     
     c1.Print(outputfile)
+
     #valuesOnX=np.array(valuesOnX)
     #valuesOnY=np.array(valuesOnY)
     #valuesOnZ=np.array(valuesOnZ)
