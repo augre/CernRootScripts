@@ -7,29 +7,9 @@ from lmfit import  Model
 from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
 import sys, getopt
 from myTypes import Location, RootFile
+#import pdb
+from fitFunctions import tripleGaussian
 
-def fitFunc(x, par):
-    """
-    The fit function to determine the parameters of the sum of three Gaussians
-    """
-
-    PDF=0.0
-    g1=0.0
-    g2=0.0
-    g3=0.0
-
-    #Calculate exponents of the Gaussians
-    arg1=(x[0]-par[1])/par[2] if par[2]!=0 else 0.0
-    arg2=(x[0]-par[3])/par[4] if par[4]!=0 else 0.0 
-    arg3=(x[0]-par[5])/par[6] if par[6]!=0 else 0.0 
-
-    # add each Gaussian contribution to the PDF
-    g1= exp(-0.5*arg1*arg1)/(par[2]*sqrt(2.0*pi)) 
-    g2= exp(-0.5*arg2*arg2)/(par[4]*sqrt(2.0*pi)) 
-    g3= exp(-0.5*arg3*arg3)/(par[6]*sqrt(2.0*pi)) 
-    PDF=par[0]*(par[7]*g1 + par[8]*g2 + (1-par[7]-par[8])*g3)
-
-    return PDF
 
 def main(argv):
     inputfile = 'Dosimetry_Detector_tot.root'
@@ -60,8 +40,10 @@ def main(argv):
     f.fileObj.Print()
     
     
+
     print "xbins:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
     
+#    pdb.set_trace()
 
     rootValXY=r.TH2D("xyPlane","xy plane",f.binN.x,f.minL.x,f.maxL.x,f.binN.y,f.minL.y,f.maxL.y)
     for y in range(0,f.binN.y):
@@ -70,6 +52,8 @@ def main(argv):
             binXY=f.histObj.GetBinContent(f.histObj.GetBin(x+1, y+1, f.binN.z/2))
             rootValXY.SetBinContent(rootValXY.GetBin(x+1,y+1), binXY)
             #print binXY
+    rootValXY.SetContour(10)
+    rootValXY.DrawCopy("colz")
     rootValXY.Draw("cont3 same")
 
     c2=r.TCanvas("c2")
@@ -91,8 +75,8 @@ def main(argv):
     rootValX.SetMarkerStyle(20)
     
 
-    
-    myFitFunc=r.TF1("fitFunc",fitFunc,-80,80, 9)
+        
+    myFitFunc=r.TF1("tripleGaussian",tripleGaussian,-80,80, 9)
     myFitFunc.SetParName(0, "norm")
     myFitFunc.SetParName(1, "mu1")
     myFitFunc.SetParName(2, "sigma1")
@@ -105,7 +89,7 @@ def main(argv):
 
     myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
 
-    rootValX.Fit("fitFunc")
+    rootValX.Fit("tripleGaussian")
 
     rootValX.Draw("E1")
     
@@ -120,7 +104,7 @@ def main(argv):
     r.gStyle.SetErrorX(0.)
     rootValY.SetMarkerStyle(20)
     
-    rootValY.Fit("fitFunc")
+    rootValY.Fit("tripleGaussian")
     
     rootValY.Draw("E1")
     
@@ -135,12 +119,12 @@ def main(argv):
     r.gStyle.SetErrorX(0.)
     rootValY.SetMarkerStyle(20)
     
-    
-    rootValZ.Fit("fitFunc")
+        
+    rootValZ.Fit("tripleGaussian")
     rootValZ.Draw("E1")
     
     c1.Print(outputfile)
 
-
+    
 if __name__ == "__main__":
        main(sys.argv[1:])
