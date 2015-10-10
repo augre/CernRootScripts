@@ -8,6 +8,11 @@ class Location:
 
 class RootFile:
     def __init__(self, fn="Dosimetry_Detector_tot.root", hn="h3D_Dose_t"):
+        """
+        If no arguments are given to RootFile, the default is:
+        Dosimetry_Detector_tot.root
+        h3D_Dose_t
+        """
         self.fileName=fn
         self.histName=hn
     def loadFile(self):
@@ -21,6 +26,11 @@ class RootFile:
     def getMaxXYZ(self):
         self.maxL=Location(self.histObj.GetXaxis().GetXmax(),self.histObj.GetYaxis().GetXmax(),self.histObj.GetZaxis().GetXmax())
     def fillUpAllVariables(self):
+        """
+        This goes calls all the methods that fill up the class's variables
+        Warning: Only use it if you dont modify want to modify the objects after(like Rebin()) 
+                 and only for initialization
+        """
         self.loadFile()
         self.loadHist()
         self.getNbinsXYZ()
