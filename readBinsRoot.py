@@ -15,13 +15,13 @@ def main(argv):
     inputfile = 'Dosimetry_Detector_tot.root'
     outputfile = 'outputPlots.png'
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv[1:],"hi:o:",["ifile=","ofile="])
     except getopt.GetoptError:
-        print 'test.py -i <inputfile> -o <outputfile>'
+        print argv[0],'-i <inputfile> -o <outputfile>'
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'test.py -i <inputfile> -o <outputfile>'
+            print argv[0],'-i <inputfile> -o <outputfile>'
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
@@ -52,12 +52,14 @@ def main(argv):
             binXY=f.histObj.GetBinContent(f.histObj.GetBin(x+1, y+1, f.binN.z/2))
             rootValXY.SetBinContent(rootValXY.GetBin(x+1,y+1), binXY)
             #print binXY
+    
+    c2=r.TCanvas("c2")
+    r.gStyle.SetOptStat(0)
     rootValXY.SetContour(10)
     rootValXY.DrawCopy("colz")
     rootValXY.Draw("cont3 same")
-
-    c2=r.TCanvas("c2")
     rootValXY.Draw()
+    rootValXY.SetLineColor(r.kRed)
     c2.Print("test.png")
 
     c1=r.TCanvas("c1", "", 1000,1000)
@@ -75,7 +77,7 @@ def main(argv):
     rootValX.SetMarkerStyle(20)
     
 
-        
+    #choose fitFunction and set up parameter names and values    
     myFitFunc=r.TF1("tripleGaussian",tripleGaussian,-80,80, 9)
     myFitFunc.SetParName(0, "norm")
     myFitFunc.SetParName(1, "mu1")
@@ -127,4 +129,4 @@ def main(argv):
 
     
 if __name__ == "__main__":
-       main(sys.argv[1:])
+       main(sys.argv)
