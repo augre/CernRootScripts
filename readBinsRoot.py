@@ -53,6 +53,8 @@ def main(argv):
             rootValXY.SetBinContent(rootValXY.GetBin(x+1,y+1), binXY)
             #print binXY
     
+    maxxy=rootValXY.GetBinContent(rootValXY.GetMaximumBin())
+    print maxxy
     c2=r.TCanvas("c2")
     r.gStyle.SetOptStat(0)
     rootValXY.SetContour(10)
