@@ -54,6 +54,8 @@ def main(argv):
             #print binXY
     
     maxxy=rootValXY.GetBinContent(rootValXY.GetMaximumBin())
+    max3D=f.histObj.GetBinContent(f.histObj.GetMaximumBin())
+    print "maxXY:",maxxy,"max3D",max3D
     print maxxy
     c2=r.TCanvas("c2")
     r.gStyle.SetOptStat(0)
