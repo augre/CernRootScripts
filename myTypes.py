@@ -25,6 +25,16 @@ class RootFile:
         self.minL=Location(self.histObj.GetXaxis().GetXmin(),self.histObj.GetYaxis().GetXmin(),self.histObj.GetZaxis().GetXmin())
     def getMaxXYZ(self):
         self.maxL=Location(self.histObj.GetXaxis().GetXmax(),self.histObj.GetYaxis().GetXmax(),self.histObj.GetZaxis().GetXmax())
+    def initTH2DforXYPlane(self):
+        self.rootValXY=ROOT.TH2D("xyPlane","xy plane",self.binN.x,self.minL.x,self.maxL.x,self.binN.y,self.minL.y,self.maxL.y)
+    def getXYPlane(self):
+        for y in range(0,self.binN.y):
+            for x in range(0,self.binN.x):
+                #print "y:",y,"x:",x
+                binXY=self.histObj.GetBinContent(self.histObj.GetBin(x+1, y+1, self.binN.z/2))
+                self.rootValXY.SetBinContent(self.rootValXY.GetBin(x+1,y+1), binXY)
+                #print binXY
+
     def fillUpAllVariables(self):
         """
         This goes calls all the methods that fill up the class's variables
@@ -36,3 +46,5 @@ class RootFile:
         self.getNbinsXYZ()
         self.getMinXYZ()
         self.getMaxXYZ()
+        self.initTH2DforXYPlane()
+        self.getXYPlane()
