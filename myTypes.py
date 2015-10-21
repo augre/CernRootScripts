@@ -27,7 +27,7 @@ class RootFile:
         self.maxL=Location(self.histObj.GetXaxis().GetXmax(),self.histObj.GetYaxis().GetXmax(),self.histObj.GetZaxis().GetXmax())
     def fillUpAllVariables(self):
         """
-        This goes calls all the methods that fill up the class's variables
+        This calls all the methods that fill up the class's variables
         Warning: Only use it if you dont modify want to modify the objects after(like Rebin()) 
                  and only for initialization
         """

@@ -3,11 +3,11 @@ import ROOT as r
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import sqrt, pi, exp, linspace, loadtxt
-from lmfit import  Model
-from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
+#from lmfit import  Model
+#from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
 import sys, getopt
 from myTypes import Location, RootFile
-#import pdb
+import pdb
 from fitFunctions import tripleGaussian
 
 
@@ -56,7 +56,8 @@ def main(argv):
     maxxy=rootValXY.GetBinContent(rootValXY.GetMaximumBin())
     max3D=f.histObj.GetBinContent(f.histObj.GetMaximumBin())
     print "maxXY:",maxxy,"max3D",max3D
-    print maxxy
+    
+
     c2=r.TCanvas("c2")
     r.gStyle.SetOptStat(0)
     rootValXY.SetContour(10)
@@ -70,9 +71,11 @@ def main(argv):
     c1.Divide(1,3)
     c1.cd(1)
     
+#    pdb.set_trace()
     initialBin=f.histObj.GetBin(1,f.binN.y/2,f.binN.z/2)
     print "Initial bin on x:",initialBin
     rootValX=r.TH1D("valsX","Energy deposited in 1mm cubes on X axis", f.binN.x, f.minL.x, f.maxL.x)
+#    pdb.set_trace()
     for i in xrange(0,f.binN.x):
         rootValX.SetBinContent(i+1 ,f.histObj.GetBinContent(initialBin+i))
     
@@ -82,20 +85,47 @@ def main(argv):
     
 
     #choose fitFunction and set up parameter names and values    
-    myFitFunc=r.TF1("tripleGaussian",tripleGaussian,-80,80, 9)
-    myFitFunc.SetParName(0, "norm")
-    myFitFunc.SetParName(1, "mu1")
-    myFitFunc.SetParName(2, "sigma1")
-    myFitFunc.SetParName(3, "mu2")
-    myFitFunc.SetParName(4, "sigma2")
-    myFitFunc.SetParName(5, "mu3")
-    myFitFunc.SetParName(6, "sigma3")
-    myFitFunc.SetParName(7, "frac1")
-    myFitFunc.SetParName(8, "frac2")
+#    myFitFunc=r.TF1("tripleGaussian",tripleGaussian,-20,20, 9)
+#    myFitFunc.SetParName(0, "norm")
+#    myFitFunc.SetParName(1, "mu1")
+#    myFitFunc.SetParName(2, "sigma1")
+#    myFitFunc.SetParName(3, "mu2")
+#    myFitFunc.SetParName(4, "sigma2")
+#    myFitFunc.SetParName(5, "mu3")
+#    myFitFunc.SetParName(6, "sigma3")
+#    myFitFunc.SetParName(7, "frac1")
+#    myFitFunc.SetParName(8, "frac2")
+#
+#    myFitFunc.SetParameters(250, -.2, 5, 13, 3.7, -1.2, 24, .67, .03)
+#
+#    rootValX.Fit("tripleGaussian", "I")
 
-    myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
+#    pdb.set_trace()
+    g1=r.TF1("g1","expo",-40,-5)
+    g2=r.TF1("g2","gaus",-5,5)
+    g3=r.TF1("g3","expo",5,80)
+    total=r.TF1("total", "g1+g2+g3",-80,80)
+#    pdb.set_trace()
 
-    rootValX.Fit("tripleGaussian")
+    rootValX.Fit("g1","R")
+    rootValX.Fit("g2","R+")
+    rootValX.Fit("g3","R+")
+
+    par=[]
+    par.append(g1.GetParameter(0))
+    par.append(g1.GetParameter(1))
+    par.append(g2.GetParameter(0))
+    par.append(g2.GetParameter(1))
+    par.append(g2.GetParameter(2))
+    par.append(g3.GetParameter(0))
+    par.append(g3.GetParameter(1))
+    print par
+#
+#    pdb.set_trace()
+    total.SetParameters(par[0],par[1],par[2],par[3],par[4],par[5],par[6])
+    rootValX.Fit("total", "R")
+#    pdb.set_trace()
+
 
     rootValX.Draw("E1")
     
@@ -110,7 +140,7 @@ def main(argv):
     r.gStyle.SetErrorX(0.)
     rootValY.SetMarkerStyle(20)
     
-    rootValY.Fit("tripleGaussian")
+#    rootValY.Fit("tripleGaussian")
     
     rootValY.Draw("E1")
     
@@ -126,7 +156,7 @@ def main(argv):
     rootValY.SetMarkerStyle(20)
     
         
-    rootValZ.Fit("tripleGaussian")
+#    rootValZ.Fit("tripleGaussian")
     rootValZ.Draw("E1")
     
     c1.Print(outputfile)
