@@ -37,6 +37,10 @@ def main(argv):
     f.getNbinsXYZ()
     f.getMinXYZ()
     f.getMaxXYZ()
+    f.initTH2DforXYPlane()
+    f.getXYPlane()
+    f.initTH1DforEachAxis()
+    f.getTH1DforEachAxis()
     f.fileObj.Print()
     
     
@@ -45,40 +49,27 @@ def main(argv):
     
 #    pdb.set_trace()
 
-    rootValXY=r.TH2D("xyPlane","xy plane",f.binN.x,f.minL.x,f.maxL.x,f.binN.y,f.minL.y,f.maxL.y)
-    for y in range(0,f.binN.y):
-        for x in range(0,f.binN.x):
-            #print "y:",y,"x:",x
-            binXY=f.histObj.GetBinContent(f.histObj.GetBin(x+1, y+1, f.binN.z/2))
-            rootValXY.SetBinContent(rootValXY.GetBin(x+1,y+1), binXY)
-            #print binXY
-    
-    maxxy=rootValXY.GetBinContent(rootValXY.GetMaximumBin())
+   
+    maxxy=f.rootValXY.GetBinContent(f.rootValXY.GetMaximumBin())
     max3D=f.histObj.GetBinContent(f.histObj.GetMaximumBin())
     print "maxXY:",maxxy,"max3D",max3D
     print maxxy
     c2=r.TCanvas("c2")
     r.gStyle.SetOptStat(0)
-    rootValXY.SetContour(10)
-    rootValXY.DrawCopy("colz")
-    rootValXY.Draw("cont3 same")
-    rootValXY.Draw()
-    rootValXY.SetLineColor(r.kRed)
+    f.rootValXY.SetContour(10)
+    f.rootValXY.DrawCopy("colz")
+    f.rootValXY.Draw("cont3 same")
+    f.rootValXY.Draw()
+    f.rootValXY.SetLineColor(r.kRed)
     c2.Print("test.png")
 
     c1=r.TCanvas("c1", "", 1000,1000)
     c1.Divide(1,3)
     c1.cd(1)
     
-    initialBin=f.histObj.GetBin(1,f.binN.y/2,f.binN.z/2)
-    print "Initial bin on x:",initialBin
-    rootValX=r.TH1D("valsX","Energy deposited in 1mm cubes on X axis", f.binN.x, f.minL.x, f.maxL.x)
-    for i in xrange(0,f.binN.x):
-        rootValX.SetBinContent(i+1 ,f.histObj.GetBinContent(initialBin+i))
-    
     r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
-    rootValX.SetMarkerStyle(20)
+    f.rootValX.SetMarkerStyle(20)
     
 
     #choose fitFunction and set up parameter names and values    
@@ -95,39 +86,35 @@ def main(argv):
 
     myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
 
-    rootValX.Fit("tripleGaussian")
+    f.rootValX.Fit("tripleGaussian")
 
-    rootValX.Draw("E1")
+    f.rootValX.Draw("E1")
+    par=myFitFunc.GetParameters()
+    
+
+    print "Parameters: ",par[0],par[1],par[8]
+    x=[0]
+    print "y @ x=0: ", tripleGaussian(x,par )
     
     c1.cd(2)
-    initialBin=f.histObj.GetBin(f.binN.x/2,1,f.binN.z/2)
-    print "Initial bin on y:",initialBin
-    rootValY=r.TH1D("valsY","Energy deposited in 1mm cubes on Y axis", f.binN.y, f.minL.y, f.maxL.y)
-    for i in xrange(0,f.binN.y):
-        rootValY.SetBinContent(i+1 ,f.histObj.GetBinContent(initialBin+i*162))
     
     r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
-    rootValY.SetMarkerStyle(20)
+    f.rootValY.SetMarkerStyle(20)
     
-    rootValY.Fit("tripleGaussian")
+    f.rootValY.Fit("tripleGaussian")
     
-    rootValY.Draw("E1")
+    f.rootValY.Draw("E1")
     
     c1.cd(3)
-    initialBin=f.histObj.GetBin(f.binN.x/2,f.binN.y/2,1)
-    print "Initial bin on z:",initialBin
-    rootValZ=r.TH1D("valsZ","Energy deposited in 1mm cubes on Z axis", f.binN.z, f.minL.z, f.maxL.z)
-    for i in xrange(0,f.binN.z):
-        rootValZ.SetBinContent(i+1 ,f.histObj.GetBinContent(initialBin+i*26244))
     
     r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
-    rootValY.SetMarkerStyle(20)
+    f.rootValY.SetMarkerStyle(20)
     
         
-    rootValZ.Fit("tripleGaussian")
-    rootValZ.Draw("E1")
+    f.rootValZ.Fit("tripleGaussian")
+    f.rootValZ.Draw("E1")
     
     c1.Print(outputfile)
 
