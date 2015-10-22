@@ -34,11 +34,22 @@ class RootFile:
                 binXY=self.histObj.GetBinContent(self.histObj.GetBin(x+1, y+1, self.binN.z/2))
                 self.rootValXY.SetBinContent(self.rootValXY.GetBin(x+1,y+1), binXY)
                 #print binXY
+    def initTH1DforEachAxis(self):
+        self.rootValX=ROOT.TH1D("valsX","Energy deposited in 1mm cubes on X axis", self.binN.x, self.minL.x, self.maxL.x)
+        self.rootValY=ROOT.TH1D("valsY","Energy deposited in 1mm cubes on Y axis", self.binN.y, self.minL.y, self.maxL.y)
+        self.rootValZ=ROOT.TH1D("valsZ","Energy deposited in 1mm cubes on Z axis", self.binN.z, self.minL.z, self.maxL.z)
+    def getTH1DforEachAxis(self):
+        for i in xrange(0,self.binN.x):
+            self.rootValX.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(i+1, self.binN.y/2, self.binN.z/2)))
+        for i in xrange(0,self.binN.y):
+            self.rootValY.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, i+1, self.binN.z/2)))
+        for i in xrange(0,self.binN.z):
+            self.rootValZ.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, self.binN.y/2, i+1)))
 
     def fillUpAllVariables(self):
         """
-        This goes calls all the methods that fill up the class's variables
-        Warning: Only use it if you dont modify want to modify the objects after(like Rebin()) 
+        This calls all the methods that fill up the class's variables
+        Warning: Only use it if you dont want to modify the objects after(like Rebin()) 
                  and only for initialization
         """
         self.loadFile()
@@ -48,3 +59,5 @@ class RootFile:
         self.getMaxXYZ()
         self.initTH2DforXYPlane()
         self.getXYPlane()
+        self.initTH1DforEachAxis()
+        self.getTH1DforEachAxis()
