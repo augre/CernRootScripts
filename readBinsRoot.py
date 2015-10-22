@@ -3,12 +3,13 @@ import ROOT as r
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import sqrt, pi, exp, linspace, loadtxt
-from lmfit import  Model
-from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
+from scipy.optimize import fmin
+#from lmfit import  Model
+#from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
 import sys, getopt
 from myTypes import Location, RootFile
 #import pdb
-from fitFunctions import tripleGaussian
+from fitFunctions import tripleGaussian, findInverseValueTriple
 
 
 def main(argv):
@@ -89,23 +90,51 @@ def main(argv):
     f.rootValX.SetMarkerStyle(20)
     f.rootValX.Draw("E1")
 
+    #Get maximum of fit function
     par=myFitFunc.GetParameters()
-    
+    fitFuncMax=fmin(lambda x: -tripleGaussian(x, par), -80)
+    print fitFuncMax
+    #get x value @ .9*y and .5*y
+    x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    print "90% of y max @ x= ",x90
+    print "50% of y max @ x= ",x50
+    print "x axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
 
-    print "Parameters: ",par[0],par[1],par[8]
-    x=[0]
-    print "y @ x=0: ", tripleGaussian(x,par )
-    
     c1.cd(2)
     f.rootValY.Fit("tripleGaussian")
     f.rootValY.SetMarkerStyle(20)
     f.rootValY.Draw("E1")
-    
+
+    #Get maximum of fit function
+    par=myFitFunc.GetParameters()
+    fitFuncMax=fmin(lambda x: -tripleGaussian(x, par), -80)
+    print fitFuncMax
+    #get x value @ .9*y and .5*y
+    x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    print "90% of y max @ x= ",x90
+    print "50% of y max @ x= ",x50
+    print "y axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
+
+
     c1.cd(3)
     f.rootValZ.Fit("tripleGaussian")
     f.rootValZ.SetMarkerStyle(20)
     f.rootValZ.Draw("E1")
-    
+
+    #Get maximum of fit function
+    par=myFitFunc.GetParameters()
+    fitFuncMax=fmin(lambda x: -tripleGaussian(x, par), -80)
+    print fitFuncMax
+    #get x value @ .9*y and .5*y
+    x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    print "90% of y max @ x= ",x90
+    print "50% of y max @ x= ",x50
+    print "z axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
+
+
     c1.Print(outputfile)
 
     
