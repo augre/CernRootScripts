@@ -25,10 +25,10 @@ def tripleGaussian(x, par):
 def inverseTripleGaussian(y, par):
     pass
 
-def findInverseValueTriple(y, par, fromx, tox):
+def findInverseValueTriple(y, par, fromx, tox,step=1):
     xStatus=0
     a=[0]
-    for i in xrange(fromx, tox):
+    for i in xrange(fromx, tox, step):
         a[0]=i
         if tripleGaussian(a, par) < y:
             xStatus=i
@@ -37,10 +37,10 @@ def findInverseValueTriple(y, par, fromx, tox):
             break
     a[0]=xStatus
     while tripleGaussian(a, par)< y:
-        a[0]+=.1
-    a[0]-=.1
+        a[0]=a[0]+.1 if step > 0 else a[0]-.1
+    a[0]=a[0]-.1 if step > 0 else a[0]+.1
     while tripleGaussian(a, par)< y:
-        a[0]+=.01
-    a[0]-=.01
+        a[0]=a[0]+.01 if step > 0 else a[0]-.01
+    a[0]=a[0]-.01 if step > 0 else a[0]+.01
 #    print "y eredmeny: ",tripleGaussian(a, par)
     return a
