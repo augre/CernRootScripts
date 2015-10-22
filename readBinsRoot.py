@@ -97,9 +97,15 @@ def main(argv):
     #get x value @ .9*y and .5*y
     x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
     x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x90plus=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
+    x50plus=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
     print "90% of y max @ x= ",x90
     print "50% of y max @ x= ",x50
-    print "x axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
+    print "90% of y max @ x= ",x90plus
+    print "50% of y max @ x= ",x50plus
+    print "x axis distance from 90% to 50% on minus side is: ",x90[0]-x50[0], "mm"
+    print "x axis distance from 90% to 50% on plus side is: ",x50plus[0]-x90plus[0], "mm"
+    print "x axis distance from 90% minus to 90% plus is: ",x90plus[0]-x90[0], "mm"
 
     c1.cd(2)
     f.rootValY.Fit("tripleGaussian")
@@ -113,9 +119,15 @@ def main(argv):
     #get x value @ .9*y and .5*y
     x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
     x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x90plus=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
+    x50plus=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
     print "90% of y max @ x= ",x90
     print "50% of y max @ x= ",x50
+    print "90% of y max @ x= ",x90plus
+    print "50% of y max @ x= ",x50plus
     print "y axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
+    print "y axis distance from 90% to 50% on plus side is: ",x50plus[0]-x90plus[0], "mm"
+    print "y axis distance from 90% minus to 90% plus is: ",x90plus[0]-x90[0], "mm"
 
 
     c1.cd(3)
@@ -130,9 +142,15 @@ def main(argv):
     #get x value @ .9*y and .5*y
     x90=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,-80, 80 )
     x50=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,-80, 80 )
+    x90plus=findInverseValueTriple(.9*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
+    x50plus=findInverseValueTriple(.5*tripleGaussian(fitFuncMax,par), par,80, -80, -1)
     print "90% of y max @ x= ",x90
     print "50% of y max @ x= ",x50
+    print "90% of y max @ x= ",x90plus
+    print "50% of y max @ x= ",x50plus
     print "z axis distance from 90% to 50% is: ",x90[0]-x50[0], "mm"
+    print "z axis distance from 90% to 50% on plus side is: ",x50plus[0]-x90plus[0], "mm"
+    print "z axis distance from 90% minus to 90% plus is: ",x90plus[0]-x90[0], "mm"
 
 
     c1.Print(outputfile)
