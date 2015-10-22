@@ -63,13 +63,8 @@ def main(argv):
     f.rootValXY.SetLineColor(r.kRed)
     c2.Print("test.png")
 
-    c1=r.TCanvas("c1", "", 1000,1000)
-    c1.Divide(1,3)
-    c1.cd(1)
-    
-    r.gStyle.SetEndErrorSize(3)
+#    r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
-    f.rootValX.SetMarkerStyle(20)
     
 
     #choose fitFunction and set up parameter names and values    
@@ -86,9 +81,14 @@ def main(argv):
 
     myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
 
-    f.rootValX.Fit("tripleGaussian")
+    c1=r.TCanvas("c1", "", 1000,1000)
+    c1.Divide(1,3)
 
+    c1.cd(1)
+    f.rootValX.Fit("tripleGaussian")
+    f.rootValX.SetMarkerStyle(20)
     f.rootValX.Draw("E1")
+
     par=myFitFunc.GetParameters()
     
 
@@ -97,23 +97,13 @@ def main(argv):
     print "y @ x=0: ", tripleGaussian(x,par )
     
     c1.cd(2)
-    
-    r.gStyle.SetEndErrorSize(3)
-    r.gStyle.SetErrorX(0.)
-    f.rootValY.SetMarkerStyle(20)
-    
     f.rootValY.Fit("tripleGaussian")
-    
+    f.rootValY.SetMarkerStyle(20)
     f.rootValY.Draw("E1")
     
     c1.cd(3)
-    
-    r.gStyle.SetEndErrorSize(3)
-    r.gStyle.SetErrorX(0.)
-    f.rootValY.SetMarkerStyle(20)
-    
-        
     f.rootValZ.Fit("tripleGaussian")
+    f.rootValZ.SetMarkerStyle(20)
     f.rootValZ.Draw("E1")
     
     c1.Print(outputfile)
