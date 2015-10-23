@@ -1,9 +1,14 @@
 from numpy import sqrt, pi, exp, log
+from ROOT import TMath as rm
 
 def gaussian(x, par0, par1):
     arg=(x[0]-par0)/par1 if par1!=0 else 0.0
     y= exp(-0.5*arg*arg)/(par1*sqrt(2.0*pi))
     return y
+
+def voigt(x, par):
+    y=rm.Voigt(x[0], par[1], par[2])
+    return par[0]*y
 
 def inverseGaussian(y, par1, par2):
     arg=sqrt(log(y)*par1*sqrt(2*pi)/-0.5)
