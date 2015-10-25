@@ -29,10 +29,14 @@ def printInfo(myFitFunc, axis="x"):
     print "90% of max value @ x= ",x90plus
     print "80% of max value @ x= ",x80plus
     print "50% of max value @ x= ",x50plus
+    print "\n===================================="
+    print "=====Penumbra and Focal \"Point\"====="
+    print "===================================="
     print axis,"axis distance from 90% to 50% on minus side is: ",x90-x50, "mm"
     print axis,"axis distance from 90% to 50% on plus side is: ",x50plus-x90plus, "mm"
     print axis,"axis distance from 90% minus to 90% plus is: ",x90plus-x90, "mm"
     print axis,"axis distance from 80% minus to 80% plus is: ",x80plus-x80, "mm"
+    print "====================================\n"
 
 
 def main(argv):
