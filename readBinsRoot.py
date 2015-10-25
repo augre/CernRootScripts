@@ -110,6 +110,7 @@ def main(argv):
 #    print "x axis distance from 90% minus to 90% plus is: ",x90plus[0]-x90[0], "mm"
 
     c1.cd(2)
+    myFitFunc.SetParameters(500, 5, .5, )
     f.rootValY.Fit("voigt")
     f.rootValY.SetMarkerStyle(20)
     f.rootValY.Draw("E1")
@@ -133,6 +134,7 @@ def main(argv):
 
 
     c1.cd(3)
+    myFitFunc.SetParameters(500, 5, .5, )
     f.rootValZ.Fit("voigt")
     f.rootValZ.SetMarkerStyle(20)
     f.rootValZ.Draw("E1")
