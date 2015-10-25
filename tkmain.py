@@ -7,6 +7,7 @@ from scipy.optimize import fmin
 #from lmfit import  Model
 #from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
 import sys, getopt
+from os import getcwd
 from myTypes import Location, RootFile
 #import pdb
 from fitFunctions import tripleGaussian, findInverseValue, voigt
@@ -43,6 +44,8 @@ def main(argv):
     inputfile = 'Dosimetry_Detector_tot.root'
     outputfile = 'outputPlots.png'
     function=voigt
+    fname="voigt"
+    myFitFunc=r.TF1("voigt",function,-80,80, 3)
     try:
         opts, args = getopt.getopt(argv[1:],"hi:o:f:",["ifile=","ofile=","function="])
     except getopt.GetoptError:
@@ -80,6 +83,7 @@ def main(argv):
     print 'Input file is "', inputfile
     print 'Output file is "', outputfile
     print 'Function is "', fname
+    print  "working dir is ", getcwd().split("/")[-1]
 
     f = RootFile()
     f.loadFile()
