@@ -10,7 +10,7 @@ import sys, getopt
 from os import getcwd
 from myTypes import Location, RootFile
 #import pdb
-from fitFunctions import tripleGaussian, findInverseValue, voigt
+from fitFunctions import tripleGaussian, voigt
 
 def printInfo(myFitFunc, axis="x"):
     #Get maximum of fit function
@@ -103,8 +103,6 @@ def main(argv):
     print "xbins:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
     
 #    pdb.set_trace()
-
-   
 #    maxxy=f.rootValXY.GetBinContent(f.rootValXY.GetMaximumBin())
 #    max3D=f.histObj.GetBinContent(f.histObj.GetMaximumBin())
 #    print "maxXY:",maxxy,"max3D",max3D
@@ -130,7 +128,7 @@ def main(argv):
         myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
         myFitFunc.SetParameters(500, 5, .5, )
-    f.rootValX.Fit(fname)
+    f.rootValX.Fit(fname, "I")
     f.rootValX.SetMarkerStyle(20)
     f.rootValX.Draw("E1")
 
@@ -141,7 +139,7 @@ def main(argv):
         myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
         myFitFunc.SetParameters(500, 5, .5, )
-    f.rootValY.Fit(fname)
+    f.rootValY.Fit(fname, "I")
     f.rootValY.SetMarkerStyle(20)
     f.rootValY.Draw("E1")
 
@@ -152,7 +150,7 @@ def main(argv):
         myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
         myFitFunc.SetParameters(500, 5, .5, )
-    f.rootValZ.Fit(fname)
+    f.rootValZ.Fit(fname,"I")
     f.rootValZ.SetMarkerStyle(20)
     f.rootValZ.Draw("E1")
 
