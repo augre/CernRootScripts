@@ -38,9 +38,6 @@ class RootFile:
         self.rootValX=ROOT.TH1D("valsX","Energy deposited in 1mm cubes on X axis", self.binN.x, self.minL.x, self.maxL.x)
         self.rootValY=ROOT.TH1D("valsY","Energy deposited in 1mm cubes on Y axis", self.binN.y, self.minL.y, self.maxL.y)
         self.rootValZ=ROOT.TH1D("valsZ","Energy deposited in 1mm cubes on Z axis", self.binN.z, self.minL.z, self.maxL.z)
-        self.rootValX.Sumw2()
-        self.rootValY.Sumw2()
-        self.rootValZ.Sumw2()
     def getTH1DforEachAxis(self):
         for i in xrange(0,self.binN.x):
             self.rootValX.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(i+1, self.binN.y/2, self.binN.z/2)))
@@ -48,7 +45,9 @@ class RootFile:
             self.rootValY.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, i+1, self.binN.z/2)))
         for i in xrange(0,self.binN.z):
             self.rootValZ.SetBinContent(i+1 ,self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, self.binN.y/2, i+1)))
-
+        self.rootValX.Sumw2()
+        self.rootValY.Sumw2()
+        self.rootValZ.Sumw2()
     def fillUpAllVariables(self):
         """
         This calls all the methods that fill up the class's variables
