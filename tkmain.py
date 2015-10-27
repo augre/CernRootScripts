@@ -97,23 +97,16 @@ def main(argv):
     f.getMaxXYZ()
     f.initTH2DforXYPlane()
     f.getXYPlane()
+    f.initTH2DforYZPlane()
+    f.getYZPlane()
     f.initTH1DforEachAxis()
     f.getTH1DforEachAxis()
     f.fileObj.Print()
     
-    
+    f.writePlanesToPngFiles(currentDir)
 
     print "f.binN.x:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
-    
 #    pdb.set_trace()
-    c2=r.TCanvas("c2")
-    r.gStyle.SetOptStat(0)
-    f.rootValXY.SetContour(10)
-    f.rootValXY.DrawCopy("colz")
-    h2=f.rootValXY.DrawClone("cont3 same")
-    h2.SetLineColor(2);
-    c2.Print(currentDir+"xyPlane.png")
-
 #    r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
     
