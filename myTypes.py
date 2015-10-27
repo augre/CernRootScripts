@@ -83,5 +83,7 @@ class RootFile:
         self.getMaxXYZ()
         self.initTH2DforXYPlane()
         self.getXYPlane()
+        self.initTH2DforYZPlane()
+        self.getYZPlane()
         self.initTH1DforEachAxis()
         self.getTH1DforEachAxis()
