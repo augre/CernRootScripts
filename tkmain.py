@@ -14,7 +14,6 @@ from fitFunctions import tripleGaussian, voigt
 
 def printInfo(myFitFunc, axis="x"):
     #Get maximum of fit function
-    par=myFitFunc.GetParameters()
     fitFuncMax=myFitFunc.GetMaximum(-80,80)
     print "y max= ", fitFuncMax
     #get x value @ .9*ymax, .8*ymax, .5*ymax
