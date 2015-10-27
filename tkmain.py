@@ -65,6 +65,9 @@ def main(argv):
                 function = voigt
                 fname="voigt"
                 myFitFunc=r.TF1("voigt",function,-80,80, 3)
+                myFitFunc.SetParName(0, "norm")
+                myFitFunc.SetParName(1, "sigma")
+                myFitFunc.SetParName(2, "lg")
             elif arg == "tripleGaussian":
                 function = tripleGaussian
                 fname="tripleGaussian"
