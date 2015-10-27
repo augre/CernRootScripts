@@ -7,6 +7,15 @@ def gaussian(x, par0, par1):
     return y
 
 def voigt(x, par):
+    """
+    Double_t Voigt(Double_t x, Double_t sigma, Double_t lg, Int_t R = 4)
+    Computation of Voigt function (normalised).
+    Voigt is a convolution of
+    gauss(xx) = 1/(sqrt(2*pi)*sigma) * exp(xx*xx/(2*sigma*sigma)
+    and
+    lorentz(xx) = (1/pi) * (lg/2) / (xx*xx + g*g/4)
+    functions.
+    """
     y=rm.Voigt(x[0], par[1], par[2])
     return par[0]*y
 
