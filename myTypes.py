@@ -34,6 +34,28 @@ class RootFile:
                 binXY=self.histObj.GetBinContent(self.histObj.GetBin(x+1, y+1, self.binN.z/2))
                 self.rootValXY.SetBinContent(self.rootValXY.GetBin(x+1,y+1), binXY)
                 #print binXY
+    def initTH2DforYZPlane(self):
+        self.rootValYZ=ROOT.TH2D("yzPlane","yz plane",self.binN.z,self.minL.z,self.maxL.z,self.binN.y,self.minL.y,self.maxL.y)
+    def getYZPlane(self):
+        for y in range(0,self.binN.y):
+            for z in range(0,self.binN.z):
+                binYZ=self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, y+1, z+1))
+                self.rootValYZ.SetBinContent(self.rootValXY.GetBin(z+1,y+1), binYZ)
+    def writePlanesToPngFiles(self,currentDir):
+        c2=ROOT.TCanvas("c2")
+        ROOT.gStyle.SetOptStat(0)
+        self.rootValXY.SetContour(10)
+        self.rootValXY.DrawCopy("colz")
+        h2=self.rootValXY.DrawClone("cont3 same")
+        h2.SetLineColor(2)
+        c2.Print(currentDir+"xyPlane.png")
+        c2=ROOT.TCanvas("c2")
+        ROOT.gStyle.SetOptStat(0)
+        self.rootValYZ.SetContour(10)
+        self.rootValYZ.DrawCopy("colz")
+        h2=self.rootValYZ.DrawClone("cont3 same")
+        h2.SetLineColor(2)
+        c2.Print(currentDir+"yzPlane.png")
     def initTH1DforEachAxis(self):
         self.rootValX=ROOT.TH1D("valsX","Energy deposited in 1mm cubes on X axis", self.binN.x, self.minL.x, self.maxL.x)
         self.rootValY=ROOT.TH1D("valsY","Energy deposited in 1mm cubes on Y axis", self.binN.y, self.minL.y, self.maxL.y)
