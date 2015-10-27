@@ -41,8 +41,9 @@ def printInfo(myFitFunc, axis="x"):
 
 
 def main(argv):
+    currentDir=getcwd().split("/")[-1]
     inputfile = 'Dosimetry_Detector_tot.root'
-    outputfile = 'outputPlots.png'
+    outputfile = currentDir+'voigt.png'
     function=voigt
     fname="voigt"
     myFitFunc=r.TF1("voigt",function,-80,80, 3)
@@ -58,7 +59,7 @@ def main(argv):
         elif opt in ("-i", "--ifile"):
             inputfile = arg
         elif opt in ("-o", "--ofile"):
-            outputfile = arg
+            outputfile = currentDir+arg
         elif opt in ("-f", "--function"):
             if arg == "voigt":
                 function = voigt
@@ -100,21 +101,16 @@ def main(argv):
     
     
 
-    print "xbins:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
+    print "f.binN.x:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
     
 #    pdb.set_trace()
-#    maxxy=f.rootValXY.GetBinContent(f.rootValXY.GetMaximumBin())
-#    max3D=f.histObj.GetBinContent(f.histObj.GetMaximumBin())
-#    print "maxXY:",maxxy,"max3D",max3D
-#    print maxxy
-#    c2=r.TCanvas("c2")
-#    r.gStyle.SetOptStat(0)
-#    f.rootValXY.SetContour(10)
-#    f.rootValXY.DrawCopy("colz")
-#    f.rootValXY.Draw("cont3 same")
-#    f.rootValXY.Draw()
-#    f.rootValXY.SetLineColor(r.kRed)
-#    c2.Print("test.png")
+    c2=r.TCanvas("c2")
+    r.gStyle.SetOptStat(0)
+    f.rootValXY.SetContour(10)
+    f.rootValXY.DrawCopy("colz")
+    h2=f.rootValXY.DrawClone("cont3 same")
+    h2.SetLineColor(2);
+    c2.Print(currentDir+"xyPlane.png")
 
 #    r.gStyle.SetEndErrorSize(3)
     r.gStyle.SetErrorX(0.)
