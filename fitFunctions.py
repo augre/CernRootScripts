@@ -1,5 +1,4 @@
-from math
-import sqrt, pi, exp, log
+from math import sqrt, pi, exp, log
 from ROOT import TMath as rm
 
 def gaussian(x, par0, par1):
