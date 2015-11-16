@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import ROOT as r
-import matplotlib.pyplot as plt
-import numpy as np
-from numpy import sqrt, pi, exp, linspace, loadtxt
-from scipy.optimize import fmin
+#import matplotlib.pyplot as plt
+#import numpy as np
+from math import sqrt, pi, exp
+#from scipy.optimize import fmin
 #from lmfit import  Model
 #from lmfit.models import VoigtModel, PseudoVoigtModel, LinearModel
 import sys, getopt
