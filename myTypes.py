@@ -7,11 +7,11 @@ class Location:
         self.z=z
 
 class RootFile:
-    def __init__(self, fn="Dosimetry_Detector_tot.root", hn="h3D_Dose_t"):
+    def __init__(self, fn="Dosimetry_Detector_tot.root", hn="edepXYZ_Tot"):
         """
         If no arguments are given to RootFile, the default is:
         Dosimetry_Detector_tot.root
-        h3D_Dose_t
+        edepXYZ_Tot
         """
         self.fileName=fn
         self.histName=hn
@@ -41,21 +41,21 @@ class RootFile:
             for z in range(0,self.binN.z):
                 binYZ=self.histObj.GetBinContent(self.histObj.GetBin(self.binN.x/2, y+1, z+1))
                 self.rootValYZ.SetBinContent(self.rootValXY.GetBin(z+1,y+1), binYZ)
-    def writePlanesToPngFiles(self,currentDir):
+    def writePlanesToPngFiles(self):
         c2=ROOT.TCanvas("c2")
         ROOT.gStyle.SetOptStat(0)
         self.rootValXY.SetContour(10)
         self.rootValXY.DrawCopy("colz")
         h2=self.rootValXY.DrawClone("cont3 same")
         h2.SetLineColor(2)
-        c2.Print(currentDir+"xyPlane.png")
+        c2.Print("xyPlane.png")
         c2=ROOT.TCanvas("c2")
         ROOT.gStyle.SetOptStat(0)
         self.rootValYZ.SetContour(10)
         self.rootValYZ.DrawCopy("colz")
         h2=self.rootValYZ.DrawClone("cont3 same")
         h2.SetLineColor(2)
-        c2.Print(currentDir+"yzPlane.png")
+        c2.Print("yzPlane.png")
     def initTH1DforEachAxis(self):
         self.rootValX=ROOT.TH1D("valsX","Energy deposited in 1mm cubes on X axis", self.binN.x, self.minL.x, self.maxL.x)
         self.rootValY=ROOT.TH1D("valsY","Energy deposited in 1mm cubes on Y axis", self.binN.y, self.minL.y, self.maxL.y)

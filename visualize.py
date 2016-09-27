@@ -5,9 +5,11 @@ import numpy.testing as npt
 from myTypes import RootFile
 
 def main(argv):
-    f = RootFile()
+    print argv
+    f = RootFile(fn=argv[1], hn=argv[2])
     f.fillUpAllVariables()
     f.fileObj.Print()
+    f.writePlanesToPngFiles()
     
     title="title..."
     
@@ -18,7 +20,7 @@ def main(argv):
     dose_max=f.histObj.Project3D("xy").GetBinContent(f.histObj.Project3D("xy").GetMaximumBin())
     
     
-    c1=ROOT.TCanvas("c1", title ,1200,1200)
+    c1=ROOT.TCanvas("c1", title ,2000,2000)
     c1.Divide(3,2)
 
     c1.cd(1)
@@ -43,15 +45,15 @@ def main(argv):
     line_x.Draw()
 
     c1.cd(2)
-    hist2Dxz=f.histObj.Project3D("yz")
+    hist2Dxz=f.histObj.Project3D("xz")
     
-    h2_sum_y.Add(hist2Dxy,1.);
+    h2_sum_y.Add(hist2Dxz,1.);
     
     h2_sum_y.Smooth()
 #    h2_sum_x.Smooth()
 #    h2_sum_x.Smooth()
     
-    h2_sum_y.SetTitle(title+"dose deposition yz projection")
+    h2_sum_y.SetTitle(title+"dose deposition xz projection")
     h2_sum_y.DrawCopy("colz")
     h2_sum_y.SetContour(10)
     h2_sum_y.GetXaxis().SetTitle("Distance in mm")
@@ -94,12 +96,12 @@ def main(argv):
     print "maxiX=",maxiX
     
     c1.cd(5)
-    projX=h2_sum_y.ProjectionX("Profile y-axis",f.binN.y/2,f.binN.y/2)
-    projX.SetTitle("Profile x-axis; Position [u.u]; Intensity [u.u]")
-    projX.GetXaxis().SetTitle("Distance in mm")
-    projX.SetLineColor(ROOT.kRed)
-    projX.Draw()
-    maxiX=projX.GetMaximum()
+    projY=h2_sum_y.ProjectionX("Profile y-axis",f.binN.y/2,f.binN.y/2)
+    projY.SetTitle("Profile y-axis; Position [u.u]; Intensity [u.u]")
+    projY.GetXaxis().SetTitle("Distance in mm")
+    projY.SetLineColor(ROOT.kRed)
+    projY.Draw()
+    maxiY=projY.GetMaximum()
     print "maxiX=",maxiX
 
 
@@ -114,7 +116,8 @@ def main(argv):
         
 
     
-    c1.Print("doesline.png")
+    c1.Print("doseline.png")
+
 
 if __name__ == "__main__":
        main(sys.argv)

@@ -41,7 +41,7 @@ def printInfo(myFitFunc, axis="x"):
 
 def main(argv):
     currentDir=getcwd().split("/")[-1]
-    inputfile = 'Dosimetry_Detector_tot.root'
+    inputfile = 'Dosimetry_detector_complete1_tot.root'
     outputfile = currentDir+'voigt.png'
     function=voigt
     fname="voigt"
@@ -88,7 +88,7 @@ def main(argv):
     print 'Function is "', fname
     print  "working dir is ", getcwd().split("/")[-1]
 
-    f = RootFile()
+    f = RootFile(fn=inputfile)
     f.loadFile()
     f.loadHist()
     f.histObj.Rebin3D(2,2,2)
@@ -103,7 +103,7 @@ def main(argv):
     f.getTH1DforEachAxis()
     f.fileObj.Print()
     
-    f.writePlanesToPngFiles(currentDir)
+    f.writePlanesToPngFiles()
 
     print "f.binN.x:",f.binN.x,"f.binN.y:",f.binN.y,"f.binN.z:",f.binN.z
 #    pdb.set_trace()
