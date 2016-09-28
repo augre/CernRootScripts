@@ -42,7 +42,7 @@ def printInfo(myFitFunc, axis="x"):
 def main(argv):
     currentDir=getcwd().split("/")[-1]
     inputfile = 'Dosimetry_detector_complete1_tot.root'
-    outputfile = currentDir+'voigt.png'
+    outputfile = 'voigt.png'
     function=voigt
     fname="voigt"
     myFitFunc=r.TF1("voigt",function,-80,80, 3)
