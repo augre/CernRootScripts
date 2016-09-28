@@ -58,7 +58,7 @@ def main(argv):
         elif opt in ("-i", "--ifile"):
             inputfile = arg
         elif opt in ("-o", "--ofile"):
-            outputfile = currentDir+arg
+            outputfile = arg
         elif opt in ("-f", "--function"):
             if arg == "voigt":
                 function = voigt
