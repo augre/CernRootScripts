@@ -63,14 +63,14 @@ def main(argv):
             if arg == "voigt":
                 function = voigt
                 fname="voigt"
-                myFitFunc=r.TF1("voigt",function,-80,80, 3)
+                myFitFunc=r.TF1("voigt",function,0,120, 4)
                 myFitFunc.SetParName(0, "norm")
                 myFitFunc.SetParName(1, "sigma")
                 myFitFunc.SetParName(2, "lg")
             elif arg == "tripleGaussian":
                 function = tripleGaussian
                 fname="tripleGaussian"
-                myFitFunc=r.TF1("tripleGaussian",function,-80,80, 9)
+                myFitFunc=r.TF1("tripleGaussian",function,0,120, 9)
                 myFitFunc.SetParName(0, "norm")
                 myFitFunc.SetParName(1, "mu1")
                 myFitFunc.SetParName(2, "sigma1")
@@ -88,7 +88,7 @@ def main(argv):
     print 'Function is "', fname
     print  "working dir is ", getcwd().split("/")[-1]
 
-    f = RootFile(fn=inputfile)
+    f = RootFile(fn=inputfile, hn="edepXYZ_Tot")
     f.loadFile()
     f.loadHist()
     f.histObj.Rebin3D(2,2,2)
