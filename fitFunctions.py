@@ -16,7 +16,7 @@ def voigt(x, par):
     lorentz(xx) = (1/pi) * (lg/2) / (xx*xx + g*g/4)
     functions.
     """
-    y=rm.Voigt(x[0], par[1], par[2])
+    y=rm.Voigt(x[0]-par[3], par[1], par[2])
     return par[0]*y
 
 def tripleGaussian(x, par):

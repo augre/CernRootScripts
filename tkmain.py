@@ -45,7 +45,7 @@ def main(argv):
     outputfile = 'voigt.png'
     function=voigt
     fname="voigt"
-    myFitFunc=r.TF1("voigt",function,-80,80, 3)
+    myFitFunc=r.TF1("voigt",function,0,120, 4)
     try:
         opts, args = getopt.getopt(argv[1:],"hi:o:f:",["ifile=","ofile=","function="])
     except getopt.GetoptError:
@@ -67,6 +67,7 @@ def main(argv):
                 myFitFunc.SetParName(0, "norm")
                 myFitFunc.SetParName(1, "sigma")
                 myFitFunc.SetParName(2, "lg")
+                myFitFunc.SetParName(3, "max")
             elif arg == "tripleGaussian":
                 function = tripleGaussian
                 fname="tripleGaussian"
@@ -118,7 +119,9 @@ def main(argv):
     if function==tripleGaussian:
         myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
-        myFitFunc.SetParameters(500, 5, .5, )
+	maxbin=f.rootValX.GetMaximumBin()
+	print "maxbin:", maxbin,"maxbincontent:",f.rootValX.GetBinContent(maxbin)
+        myFitFunc.SetParameters(f.rootValX.GetBinContent(maxbin), 5, .5, maxbin)
     f.rootValX.Fit(fname, "I")
     f.rootValX.SetMarkerStyle(20)
     f.rootValX.Draw("E1")
@@ -127,9 +130,11 @@ def main(argv):
 
     c1.cd(2)
     if function==tripleGaussian:
-        myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
+        myFitFunc.SetParameters(150, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
-        myFitFunc.SetParameters(500, 5, .5, )
+	maxbin=f.rootValY.GetMaximumBin()
+	print "maxbin:", maxbin,"maxbincontent:",f.rootValY.GetBinContent(maxbin)
+        myFitFunc.SetParameters(f.rootValY.GetBinContent(maxbin), 5, .5, maxbin)
     f.rootValY.Fit(fname, "I")
     f.rootValY.SetMarkerStyle(20)
     f.rootValY.Draw("E1")
@@ -140,7 +145,9 @@ def main(argv):
     if function==tripleGaussian:
         myFitFunc.SetParameters(1500, 5, .5, 6, 1.5, 5, 5, .4, .3)
     elif function==voigt:
-        myFitFunc.SetParameters(500, 5, .5, )
+	maxbin=f.rootValZ.GetMaximumBin()
+	print "maxbin:", maxbin,"maxbincontent:",f.rootValZ.GetBinContent(maxbin)
+        myFitFunc.SetParameters(f.rootValZ.GetBinContent(maxbin), 5, .5, maxbin)
     f.rootValZ.Fit(fname,"I")
     f.rootValZ.SetMarkerStyle(20)
     f.rootValZ.Draw("E1")
